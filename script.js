@@ -1,54 +1,3 @@
-// CUSTOM CURSOR
-const cursor = document.querySelector('.cursor');
-const cursorDot = document.querySelector('.cursor-dot');
-
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    cursorDot.style.left = e.clientX + 'px';
-    cursorDot.style.top = e.clientY + 'px';
-});
-
-// CURSOR HOVER EFFECT
-const hoverElements = document.querySelectorAll('a, button, .game-card, .stat-card, .feature-box');
-hoverElements.forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-});
-
-// PARALLAX EFFECT ON HERO
-document.addEventListener('mousemove', (e) => {
-    const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-    const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-    
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    }
-});
-
-// 3D TILT EFFECT ON GAME CARDS
-const gameCards = document.querySelectorAll('.game-card');
-gameCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        
-        card.style.transform = `translateY(-10px) scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
-    });
-});
-
 // SCROLL ANIMATIONS
 const fadeElements = document.querySelectorAll('.fade-in');
 
@@ -110,3 +59,112 @@ const setActiveLink = () => {
 
 window.addEventListener('scroll', setActiveLink);
 setActiveLink(); // Set initial active state
+
+// PARALLAX EFFECT ON HERO
+document.addEventListener('mousemove', (e) => {
+    const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
+    const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+    
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+        heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
+});
+
+// GAME CARD HOVER GLOW EFFECT
+const gameCards = document.querySelectorAll('.game-card');
+gameCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+    });
+});
+
+// STATS COUNTER ANIMATION
+const statNumbers = document.querySelectorAll('.stat-number');
+let statsAnimated = false;
+
+const animateStats = () => {
+    const statsSection = document.querySelector('.stats-section');
+    const rect = statsSection.getBoundingClientRect();
+    
+    if (rect.top < window.innerHeight - 100 && !statsAnimated) {
+        statsAnimated = true;
+        
+        statNumbers.forEach(stat => {
+            const finalValue = stat.textContent;
+            if (finalValue === '∞') return;
+            
+            const numValue = parseInt(finalValue);
+            let current = 0;
+            const increment = numValue / 50;
+            const duration = 2000;
+            const stepTime = duration / 50;
+            
+            stat.textContent = '0';
+            
+            const counter = setInterval(() => {
+                current += increment;
+                if (current >= numValue) {
+                    stat.textContent = finalValue;
+                    clearInterval(counter);
+                } else {
+                    stat.textContent = Math.floor(current);
+                }
+            }, stepTime);
+        });
+    }
+};
+
+window.addEventListener('scroll', animateStats);
+
+// FEATURE BOX HOVER EFFECTS
+const featureBoxes = document.querySelectorAll('.feature-box');
+featureBoxes.forEach((box, index) => {
+    box.addEventListener('mouseenter', () => {
+        featureBoxes.forEach((otherBox, otherIndex) => {
+            if (otherIndex !== index) {
+                otherBox.style.opacity = '0.6';
+            }
+        });
+    });
+    
+    box.addEventListener('mouseleave', () => {
+        featureBoxes.forEach(otherBox => {
+            otherBox.style.opacity = '1';
+        });
+    });
+});
+
+// REGISTRATION BUTTON ANIMATION
+const registerButtons = document.querySelectorAll('.cta-button');
+registerButtons.forEach(button => {
+    button.addEventListener('mouseenter', () => {
+        button.style.animation = 'none';
+    });
+    
+    button.addEventListener('mouseleave', () => {
+        button.style.animation = 'buttonPulse 2s ease-in-out infinite';
+    });
+});
+
+// LOGO CLICK TO TOP
+document.querySelector('.logo').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Add loading animation
+window.addEventListener('load', () => {
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '1';
+    }, 100);
+});
