@@ -62,25 +62,21 @@ setActiveLink(); // Set initial active state
 
 // PARALLAX EFFECT ON HERO
 document.addEventListener('mousemove', (e) => {
-    const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
-    const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+    const moveX = (e.clientX - window.innerWidth / 2) * 0.008;
+    const moveY = (e.clientY - window.innerHeight / 2) * 0.008;
     
     const heroContent = document.querySelector('.hero-content');
     if (heroContent) {
         heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
     }
-});
-
-// GAME CARD HOVER GLOW EFFECT
-const gameCards = document.querySelectorAll('.game-card');
-gameCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
+    
+    // Parallax for floating shapes
+    const shapes = document.querySelectorAll('.shape');
+    shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 0.003;
+        const x = moveX * speed;
+        const y = moveY * speed;
+        shape.style.transform = `translate(${x}px, ${y}px)`;
     });
 });
 
@@ -90,6 +86,8 @@ let statsAnimated = false;
 
 const animateStats = () => {
     const statsSection = document.querySelector('.stats-section');
+    if (!statsSection) return;
+    
     const rect = statsSection.getBoundingClientRect();
     
     if (rect.top < window.innerHeight - 100 && !statsAnimated) {
@@ -101,9 +99,9 @@ const animateStats = () => {
             
             const numValue = parseInt(finalValue);
             let current = 0;
-            const increment = numValue / 50;
+            const increment = numValue / 60;
             const duration = 2000;
-            const stepTime = duration / 50;
+            const stepTime = duration / 60;
             
             stat.textContent = '0';
             
@@ -128,7 +126,8 @@ featureBoxes.forEach((box, index) => {
     box.addEventListener('mouseenter', () => {
         featureBoxes.forEach((otherBox, otherIndex) => {
             if (otherIndex !== index) {
-                otherBox.style.opacity = '0.6';
+                otherBox.style.opacity = '0.5';
+                otherBox.style.transform = 'scale(0.95)';
             }
         });
     });
@@ -136,35 +135,151 @@ featureBoxes.forEach((box, index) => {
     box.addEventListener('mouseleave', () => {
         featureBoxes.forEach(otherBox => {
             otherBox.style.opacity = '1';
+            otherBox.style.transform = 'scale(1)';
         });
     });
 });
 
-// REGISTRATION BUTTON ANIMATION
-const registerButtons = document.querySelectorAll('.cta-button');
-registerButtons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
-        button.style.animation = 'none';
+// GAME CARDS STAGGER ANIMATION
+const gameCards = document.querySelectorAll('.game-card');
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const gameObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
+            gameObserver.unobserve(entry.target);
+        }
     });
-    
-    button.addEventListener('mouseleave', () => {
-        button.style.animation = 'buttonPulse 2s ease-in-out infinite';
+}, observerOptions);
+
+gameCards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(50px)';
+    card.style.transition = 'all 0.6s ease';
+    gameObserver.observe(card);
+});
+
+// REGISTRATION STEPS ANIMATION
+const stepCards = document.querySelectorAll('.step-card');
+const stepObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateX(0)';
+            }, index * 150);
+            stepObserver.unobserve(entry.target);
+        }
     });
+}, observerOptions);
+
+stepCards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(-50px)';
+    card.style.transition = 'all 0.6s ease';
+    stepObserver.observe(card);
 });
 
 // LOGO CLICK TO TOP
-document.querySelector('.logo').addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+const logo = document.querySelector('.logo');
+if (logo) {
+    logo.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// HIDE FLOATING BUTTON IN REGISTRATION SECTION
+const floatingBtn = document.querySelector('.floating-register');
+const registerSection = document.querySelector('#register');
+
+window.addEventListener('scroll', () => {
+    if (registerSection) {
+        const rect = registerSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            floatingBtn.style.opacity = '0';
+            floatingBtn.style.pointerEvents = 'none';
+        } else {
+            floatingBtn.style.opacity = '1';
+            floatingBtn.style.pointerEvents = 'auto';
+        }
+    }
+});
+
+// SMOOTH REVEAL ON PAGE LOAD
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// ADD RIPPLE EFFECT TO BUTTONS
+document.querySelectorAll('.cta-button, .float-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
     });
 });
 
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
+// Add ripple styles dynamically
+const style = document.createElement('style');
+style.textContent = `
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(0);
+        animation: ripple-animation 0.6s ease-out;
+        pointer-events: none;
+    }
+    
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// GAME CARD TILT EFFECT
+gameCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px) scale(1.03)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+    });
 });
