@@ -8,9 +8,34 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader-content">
+            <div class="loader-logo">BIT BY BIT</div>
+            <div class="loader-subtitle">PRESENTS</div>
+            <div class="loader-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <div class="loader-text">Loading PlayTopia...</div>
+        </div>
+    </div>
+
+    <!-- Floating Register Button -->
+    <div class="floating-register">
+        <a href="https://forms.gle/CmBo8YR1bBtAJoPh9" target="_blank" class="float-btn">
+            <span class="float-icon">🎮</span>
+            <span class="float-text">Register Now</span>
+        </a>
+    </div>
+
     <!-- Animated Background -->
     <div class="bg-grid"></div>
+    <div class="bg-particles"></div>
     <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
         <div class="shape"></div>
         <div class="shape"></div>
         <div class="shape"></div>
@@ -64,7 +89,7 @@
         <h2 class="section-title">Mini Game Arsenal</h2>
         <p class="prize-banner">Entry Fee: ₹75 per person | Play unlimited games</p>
         <div class="games-grid">
-            <div class="game-card" data-game="1">
+            <div class="game-card">
                 <div class="game-number">01</div>
                 <h3 class="game-title">Locked Room Card</h3>
                 <p class="game-description">
@@ -74,7 +99,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="2">
+            <div class="game-card">
                 <div class="game-number">02</div>
                 <h3 class="game-title">Spin The Dare Wheel</h3>
                 <p class="game-description">
@@ -83,7 +108,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="3">
+            <div class="game-card">
                 <div class="game-number">03</div>
                 <h3 class="game-title">Tech Bowling</h3>
                 <p class="game-description">
@@ -92,7 +117,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="4">
+            <div class="game-card">
                 <div class="game-number">04</div>
                 <h3 class="game-title">Dart & Arrow Arena</h3>
                 <p class="game-description">
@@ -101,7 +126,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="5">
+            <div class="game-card">
                 <div class="game-number">05</div>
                 <h3 class="game-title">One-Minute Perfect</h3>
                 <p class="game-description">
@@ -110,7 +135,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="6">
+            <div class="game-card">
                 <div class="game-number">06</div>
                 <h3 class="game-title">Guess The Photo</h3>
                 <p class="game-description">
@@ -119,7 +144,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="7">
+            <div class="game-card">
                 <div class="game-number">07</div>
                 <h3 class="game-title">Ping Tic Tac Toe</h3>
                 <p class="game-description">
@@ -128,7 +153,7 @@
                 </p>
             </div>
 
-            <div class="game-card" data-game="8">
+            <div class="game-card">
                 <div class="game-number">08</div>
                 <h3 class="game-title">Balloon Pyramid</h3>
                 <p class="game-description">
@@ -146,7 +171,7 @@
         <div class="mega-card">
             <div class="mega-badge">Featured</div>
             <h3 class="mega-title">Tech-Mafia City Takeover</h3>
-            <p class="game-description" style="text-align: center; font-size: 18px; margin-bottom: 40px;">
+            <p class="game-description" style="text-align: center; font-size: 18px; margin-bottom: 40px; color: #d0d6e0;">
                 A 3-hour live, interactive strategy game for 20-30 participants. Players divide into rival "mafia families" 
                 competing to control a city through <span class="game-highlight">negotiation, alliances, spying, hacking, and territory battles</span>. 
                 Fast 15-minute rounds. Face-to-face negotiations. Dynamic betrayals.
@@ -197,14 +222,40 @@
 
     <!-- Registration Section -->
     <section class="registration-section fade-in" id="register">
-        <h2 class="section-title">Secure Your Spot</h2>
-        <div class="registration-container">
-            <div class="registration-left">
-                <h3 class="registration-title">Ready to Play?</h3>
-                <p class="registration-text">
-                    Don't miss out on the ultimate gaming experience! Limited slots available. 
-                    Register now and get ready for an unforgettable day of competition, strategy, and pure fun.
-                </p>
+        <h2 class="section-title">How to Register</h2>
+        <div class="registration-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 class="step-title">Scan the QR</h3>
+                    <p class="step-description">Secure your spot in under 60 seconds.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-title">Fill the Form</h3>
+                    <p class="step-description">Provide your details and game preferences.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 class="step-title">Show Up & Play</h3>
+                    <p class="step-description">Join us on 27th Feb at AB1-127/128.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <div class="qr-container-main">
+                <div class="qr-code-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://forms.gle/CmBo8YR1bBtAJoPh9" alt="Registration QR Code">
+                </div>
+            </div>
+            <div class="qr-info">
+                <h3 class="qr-info-title">Quick Registration</h3>
+                <p class="qr-info-text">Scan the QR code or click the button below to register for PlayTopia!</p>
                 <ul class="registration-benefits">
                     <li>✓ Access to all 8 mini-games</li>
                     <li>✓ Exclusive event goodies</li>
@@ -212,15 +263,6 @@
                     <li>✓ Network with fellow gamers</li>
                 </ul>
                 <a href="https://forms.gle/CmBo8YR1bBtAJoPh9" target="_blank" class="cta-button large">Register Now →</a>
-            </div>
-            <div class="registration-right">
-                <div class="qr-container">
-                    <p class="qr-label">Scan to Register</p>
-                    <div class="qr-code">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://forms.gle/CmBo8YR1bBtAJoPh9" alt="Registration QR Code">
-                    </div>
-                    <p class="qr-instruction">Use your phone camera to scan</p>
-                </div>
             </div>
         </div>
     </section>
