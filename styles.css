@@ -928,6 +928,23 @@ nav {
     text-transform: uppercase;
     letter-spacing: 4px;
     font-weight: 900;
+    word-spacing: 0.2em;
+}
+
+@media (max-width: 768px) {
+    .mega-title {
+        font-size: 32px;
+        letter-spacing: 2px;
+        word-spacing: 0.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .mega-title {
+        font-size: 26px;
+        letter-spacing: 1px;
+        word-spacing: normal;
+    }
 }
 
 .mega-features {
@@ -1395,10 +1412,6 @@ footer {
         padding: 30px 20px;
     }
     
-    .mega-title {
-        font-size: 32px;
-    }
-    
     .mega-features {
         gap: 20px;
     }
@@ -1535,10 +1548,6 @@ footer {
     
     .game-title {
         font-size: 22px;
-    }
-    
-    .mega-title {
-        font-size: 26px;
     }
     
     .stat-number {
