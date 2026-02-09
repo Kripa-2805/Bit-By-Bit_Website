@@ -742,9 +742,10 @@ nav {
     padding: 15px 40px;
     background: rgba(0, 212, 255, 0.1);
     border: 2px solid var(--electric-blue);
-    display: inline-block;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: fit-content;
     letter-spacing: 2px;
     animation: bannerPulse 3s ease-in-out infinite;
     border-radius: 50px;
@@ -1383,10 +1384,12 @@ footer {
     }
     
     .prize-banner {
-        font-size: 16px;
+        font-size: 14px;
         padding: 12px 20px;
-        margin: 0 20px 40px;
+        margin: 0 auto 40px;
         text-align: center;
+        max-width: 90%;
+        letter-spacing: 1px;
     }
     
     .games-section {
