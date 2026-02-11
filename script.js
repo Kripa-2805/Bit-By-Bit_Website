@@ -283,3 +283,61 @@ gameCards.forEach(card => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
     });
 });
+
+// GLIMPSE CAROUSEL
+let glimpseCurrentSlide = 0;
+const glimpseTrack = document.querySelector('.glimpse-track');
+const glimpseSlides = document.querySelectorAll('.glimpse-slide');
+
+function moveGlimpse(direction) {
+    const totalSlides = glimpseSlides.length;
+    glimpseCurrentSlide += direction;
+    
+    if (glimpseCurrentSlide < 0) {
+        glimpseCurrentSlide = totalSlides - 1;
+    } else if (glimpseCurrentSlide >= totalSlides) {
+        glimpseCurrentSlide = 0;
+    }
+    
+    if (glimpseTrack) {
+        glimpseTrack.style.transform = `translateX(-${glimpseCurrentSlide * 100}%)`;
+    }
+}
+
+// Auto-advance carousel every 5 seconds
+setInterval(() => {
+    moveGlimpse(1);
+}, 5000);
+
+// GALLERY VIDEO PLAY ON CLICK
+document.querySelectorAll('.video-item video').forEach(video => {
+    video.addEventListener('click', function() {
+        if (this.paused) {
+            this.play();
+            this.setAttribute('controls', 'controls');
+        } else {
+            this.pause();
+        }
+    });
+});
+
+// GALLERY ITEMS STAGGER ANIMATION
+const galleryItems = document.querySelectorAll('.gallery-item');
+const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 80);
+            galleryObserver.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+galleryItems.forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(50px)';
+    item.style.transition = 'all 0.6s ease';
+    galleryObserver.observe(item);
+});
